@@ -4,6 +4,9 @@ function Book(title, author, isbn) {
     this.isbn = isbn
 }
 
+const form = document.querySelector('#book-form')
+const bookList = document.querySelector('#book-list')
+
 function UI() {}
 
 UI.prototype.addBookToList = (book) => {
@@ -37,13 +40,17 @@ UI.prototype.showAlert = (message, className) => {
 
 }
 
+UI.prototype.deleteBook = (target) => {
+    if (target.className === 'delete') {
+        target.parentElement.parentElement.remove()
+    }
+}
+
 UI.prototype.clearFields = () => {
     document.querySelector('#title').value = ''
     author = document.querySelector('#author').value = ''
     isbn = document.querySelector('#isbn').value = ''
 }
-
-const form = document.querySelector('#book-form')
 
 form.addEventListener('submit', (e) => {
     const title = document.querySelector('#title').value,
@@ -62,11 +69,17 @@ form.addEventListener('submit', (e) => {
         ui.showAlert('Book added', 'success')
     }
 
-    
-
     ui.clearFields()
+    e.preventDefault()
+})
 
+bookList.addEventListener('click', (e) => {
 
+    const ui = new UI
+
+    ui.deleteBook(e.target)
+
+    ui.showAlert('Book removed!', 'success')
 
     e.preventDefault()
 })
